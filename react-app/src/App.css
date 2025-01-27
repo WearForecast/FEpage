@@ -5,6 +5,8 @@
   font-style: normal;
 }
 
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Display:ital,wght@0,100..900;1,100..900&display=swap');
+
 body {
   margin: 0;
   padding: 5px;
@@ -13,11 +15,11 @@ body {
   background-color: white;
   display: flex;
   justify-content: center;
-  font-family: 'TheJamsil5Bold';
+  font-family: 'Noto Sans Display', sans-serif;
 }
 
 .container {
-  width: 760px;
+  width: 600px;
   padding: 10px;
   background-color: #979eeb;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -25,11 +27,18 @@ body {
   position: relative;
 }
 
+.Top{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-left: 5px;
+  margin-right: 15px;
+}
+
 .wearForecast {
   font-family: 'TheJamsil5Bold';
-  font-size: 2.5rem;
-  color: #282c34;
-  text-align: center;
+  font-size: 1rem;
+  left: 30px;
 }
 
 .weather-info {
@@ -46,32 +55,30 @@ body {
 }
 
 .popup-button {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  background-color: #4CAF50;
-  color: white;
+  background: transparent;
   border: none;
-  border-radius: 50%;
-  width: 60px;
-  height: 60px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+  padding: 0;
+  
 }
 
 .popup-button:hover {
-  background-color: #45a049;
   transform: scale(1.1);
 }
 
-.popup-button:active {
-  background-color: #3e8e41;
+.button{
+  display: flex;
+  gap: 10px;
 }
 
 .iconsignin {
-  font-size: 24px;
+  font-size: 25px;
+}
+
+.iconuser {
+  font-size: 25px;
+}
+
+.loginHeader {
+  font-family: 'TheJamsil5Bold';
 }
