@@ -6,6 +6,7 @@ import Login from './components/Login';
 import Mypage from './components/Mypage';
 import { GoSignIn } from "react-icons/go";
 import { CiUser } from "react-icons/ci";
+import DataDisplay from "./components/DataDisplay";
 import './App.css';
 
 function App() {
