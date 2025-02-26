@@ -36,5 +36,6 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "proxy": "https://wearforecast-767741558681.asia-northeast1.run.app"
 }

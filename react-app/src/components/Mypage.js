@@ -1,92 +1,85 @@
-import React, { useState } from 'react';
-import '../Mypage.css'; // 모달 스타일을 별도 파일에서 관리
+import React, { useState, useEffect } from "react";
 import { GrClose } from "react-icons/gr";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
-function MyPageModal({isOpen, onClose}) {
+function Mypage({ user, onClose }) {
+  const [userInfo, setUserInfo] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
+  const [formData, setFormData] = useState({ name: "", birthyear: "", region: "", gender: "" });
+  const navigate = useNavigate();
 
-  const [formData, setFormData] = useState({
-    gender: '',
-    region: '',
-    age: '',
-  });
+  useEffect(() => { if (user) fetchUserInfo(); }, [user]);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
+  const fetchUserInfo = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) throw new Error("인증 토큰이 없습니다. 로그인 상태를 확인하세요.");
+      const response = await ("/users/profile", {
+        method: "PATCH", headers: { Authorization: `Bearer ${token}` } });
+      setUserInfo(response.data);
+      setFormData(response.data);
+    } catch (error) {
+      console.error("사용자 정보를 불러오는 데 실패했습니다.", error);
+      if (error.response && error.response.status === 401) {
+        console.error("401 Unauthorized: 인증 토큰이 없거나 유효하지 않습니다. 다시 로그인해 주세요.");
+      }
+    }
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log('사용자 정보:', formData);
-    alert('정보가 저장되었습니다.');
-    onClose();
-  };
+  const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
-  if (!isOpen) return null;
+  const handleSave = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) throw new Error("인증 토큰이 없습니다. 로그인 상태를 확인하세요.");
+      await axios.patch("/api/user/profile", formData, { headers: { Authorization: `Bearer ${token}` } });
+      alert("정보가 성공적으로 수정되었습니다.");
+      setIsEditing(false);
+      fetchUserInfo();
+    } catch (error) {
+      console.error("정보 수정 중 오류 발생:", error);
+      if (error.response && error.response.status === 401) {
+        console.error("401 Unauthorized: 인증 토큰이 없거나 유효하지 않습니다. 다시 로그인해 주세요.");
+      }
+    }
+  };
 
   return (
-    <div className="modal-overlay">
-      <div className="modal-content">
+    <div className="page-container">
+      <div className="page-content">
         <div className="userheader">
-        <h2>마이페이지</h2>
-        <button type="button" onClick={onClose} style={{ marginLeft: '10px' }}>
-          <GrClose />
-        </button>
+          <h2>마이페이지</h2>
+          <button onClick={() => navigate(-1)}><GrClose /></button>
         </div>
-        <form onSubmit={handleSubmit}>
-          {/* 성별 */}
-          <label>
-            성별:
-            <select
-              name="gender"
-              value={formData.gender}
-              onChange={handleChange}
-              required
-            >
-              <option value="">선택하세요</option>
-              <option value="남">남</option>
-              <option value="여">여</option>
-              <option value="무관">무관</option>
-            </select>
-          </label>
-          <br /><br />
-
-          {/* 지역 */}
-          <label>
-            지역:
-            <input
-              type="text"
-              name="region"
-              placeholder="지역을 입력하세요"
-              value={formData.region}
-              onChange={handleChange}
-              required
-            />
-          </label>
-          <br /><br />
-
-          {/* 나이 */}
-          <label>
-            나이:
-            <input
-              type="number"
-              name="age"
-              placeholder="나이를 입력하세요"
-              value={formData.age}
-              onChange={handleChange}
-              required
-            />
-          </label>
-          <br /><br />
-
-          <button type="submit">저장</button>
-        </form>
+        {userInfo ? (
+          isEditing ? (
+            <div>
+              <label>이름: <input type="text" name="name" value={formData.name} onChange={handleChange} /></label>
+              <label>출생 연도: <input type="number" name="birthyear" value={formData.birthyear} onChange={handleChange} /></label>
+              <label>지역: <input type="text" name="region" value={formData.region} onChange={handleChange} /></label>
+              <label>성별: <select name="gender" value={formData.gender} onChange={handleChange}>
+                <option value="남">남</option>
+                <option value="여">여</option>
+                <option value="무관">무관</option>
+              </select></label>
+              <button onClick={handleSave}>저장</button>
+              <button onClick={() => setIsEditing(false)}>취소</button>
+            </div>
+          ) : (
+            <div>
+              <p><strong>이름:</strong> {userInfo.name}</p>
+              <p><strong>이메일:</strong> {userInfo.email}</p>
+              <p><strong>출생 연도:</strong> {userInfo.birthyear}</p>
+              <p><strong>지역:</strong> {userInfo.region}</p>
+              <p><strong>성별:</strong> {userInfo.gender}</p>
+              <button onClick={() => setIsEditing(true)}>정보 수정</button>
+            </div>
+          )
+        ) : (<p>로딩 중...</p>)}
       </div>
     </div>
   );
 }
 
-export default MyPageModal;
+export default Mypage;

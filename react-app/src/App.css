@@ -21,7 +21,7 @@ body {
 .container {
   width: 600px;
   padding: 10px;
-  background-color: #979eeb;
+  background-color: #000000;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   border: 1px solid black;
   position: relative;
@@ -39,19 +39,74 @@ body {
   font-family: 'TheJamsil5Bold';
   font-size: 1rem;
   left: 30px;
+  color: white;
 }
 
 .weather-info {
-  width: 100%;
+  max-width: 100%;
   background-color: #f0f0f0; 
   color: #333;
-  text-align: center;
-  padding: 10px 0;
+  display: flex;
+  align-items: center; /* 상하 중앙 정렬 */
+  justify-content: flex-start; /* 왼쪽 정렬 */
+  text-align: left;
+  padding: 10px 20px;
   font-size: 14px;
   border-bottom: 1px solid #ddd;
-  height: 150px; 
-  line-height: 40px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: 1px solid black;
+}
+
+/* 내부 컨텐츠 배치 */
+.weather-content {
+  font-family: 'TheJamsil5Bold';
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+/* 온도 표시 */
+.temp {
+  font-size: 4rem;
+  text-align: left;
+}
+
+/* 날씨 아이콘 */
+.weather-icons {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+/* 최저 & 최고 기온 컨테이너 */
+.temp-container {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+/* 최저기온 */
+.low-temp {
+  background-color: #0099ff; /* 파란색 */
+  color: white;
+  padding: 8px 12px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-weight: bold;
+}
+
+/* 최고기온 */
+.high-temp {
+  background-color: #ff6600; /* 주황색 */
+  color: white;
+  padding: 8px 12px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-weight: bold;
 }
 
 .popup-button {
@@ -75,6 +130,10 @@ body {
   font-size: 25px;
 }
 
+.iconsignout {
+  font-size: 25px;
+}
+
 .iconuser {
   font-size: 25px;
 }
@@ -82,3 +141,4 @@ body {
 .loginHeader {
   font-family: 'TheJamsil5Bold';
 }
+
